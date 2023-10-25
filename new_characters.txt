@@ -3,7 +3,7 @@ Diana Prince
 h 5 5 0 0 90
 Batman
 Bruce Wayne
-h 6 2 0 4 80
+h 7 2 0 5 0
 The Joker
 Jack Napier
 v 5 1 0 4 80
@@ -15,13 +15,10 @@ Selina Kyle
 v 12 0 6 6 50
 Aquaman
 Arthur Curry
-h 8 2 2 4 30
+h 9 2 3 4 0
 Iron Man
 Tony Stark
-h 10 8 2 0 50
-Hulk
-Bruce Banner
-h 7 2 1 4 80
+h 11 8 2 1 0
 Thanos
 n/a
-v 10 2 0 8 90
+v 11 3 0 8 47
