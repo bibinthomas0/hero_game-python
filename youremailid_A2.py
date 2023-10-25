@@ -133,11 +133,12 @@ def write_to_file(filename, character_list):
 # Function find_character() - place your own comments here...  : )
 def find_character(character_list, name):
     ind = 0
+    index = -1
     for character in character_list:
         ind += 1
         if character[0] == name:
-            return ind - 1
-    return -1
+            index = ind-1     
+    return index
 
 
 
@@ -146,6 +147,7 @@ def find_character(character_list, name):
 
 # Function add_character() - place your own comments here...  : )
 def add_character(character_list, name, secret_id, is_hero):
+    Flag = True
     for character in character_list:
         (
             lname,
@@ -158,11 +160,12 @@ def add_character(character_list, name, secret_id, is_hero):
             health,
         ) = character
         if lname == name:
-            return False
-    character = [name, secret_id, is_hero, 0, 0, 0, 0, 100]
-    character_list.append(character)
-    write_to_file("new_characters.txt", character_list=character_list)
-    return True
+            Flag = False
+    if Flag == True:
+        character = [name, secret_id, is_hero, 0, 0, 0, 0, 100]
+        character_list.append(character)
+        write_to_file("new_characters.txt", character_list=character_list)
+    return Flag
 
 
 
@@ -260,31 +263,43 @@ def do_battle(character_list, opponent1_pos, opponent2_pos):
 
 # Function sort_by_health() - place your own comments here...  : )
 def sort_by_health(character_list):
-    char_list = sorted(character_list, key=lambda x: x[7], reverse=True)
-    heading = (
-        f"{'='*50}\n-{' '*3} Character (heroes and villains) Summary{' '*3} -\n{'='*50}"
-    )
-    print(heading)
-    table_head = f"- {'':<20} {'P':^4} {'W':^3} {'L':^3} {'D':^3} {'Health':>5} -"
-    print(table_head)
-    print("-" * 50)
-    for character in char_list:
-        (
-            name,
-            secret_id,
-            is_hero,
-            no_of_battles,
-            no_of_win,
-            no_of_lost,
-            no_of_drawn,
-            health,
-        ) = character
-        alignment = "<"
+    sorted_list = character_list
+    n = len(sorted_list)
+    for i in range(n-1):
+        for j in range(0, n-i-1):
+            health_of_1 = sorted_list[j][7]
+            health_of_2 = sorted_list[j + 1][7]
+            battles_completed1 = sorted_list[j][3]
+            battles_completed2 = sorted_list[j + 1][3]
+            if health_of_1 < health_of_2 or (health_of_1 == health_of_2 and battles_completed1 < battles_completed2):
+                sorted_list[j], sorted_list[j + 1] = sorted_list[j + 1], sorted_list[j]
+    return sorted_list
+        
+    # char_list = sorted(character_list, key=lambda x: x[7], reverse=True)
+    # heading = (
+    #     f"{'='*50}\n-{' '*3} Character (heroes and villains) Summary{' '*3} -\n{'='*50}"
+    # )
+    # print(heading)
+    # table_head = f"- {'':<20} {'P':^4} {'W':^3} {'L':^3} {'D':^3} {'Health':>5} -"
+    # print(table_head)
+    # print("-" * 50)
+    # for character in char_list:
+    #     (
+    #         name,
+    #         secret_id,
+    #         is_hero,
+    #         no_of_battles,
+    #         no_of_win,
+    #         no_of_lost,
+    #         no_of_drawn,
+    #         health,
+    #     ) = character
+    #     alignment = "<"
 
-        character_details = f"- {name:{alignment}20} {no_of_battles:^4} {no_of_win:^3} {no_of_lost:^3} {no_of_drawn:^3} {health:>5} -"
-        print(character_details)
-        print("-" * 50)
-    print("=" * 50)
+    #     character_details = f"- {name:{alignment}20} {no_of_battles:^4} {no_of_win:^3} {no_of_lost:^3} {no_of_drawn:^3} {health:>5} -"
+    #     print(character_details)
+    #     print("-" * 50)
+    # print("=" * 50)
     
     
     
@@ -440,8 +455,8 @@ while Game == True:
                 character_list[second_index][5] += 1
         write_to_file("new_characters.txt", character_list=character_list)
     elif display_type == "health":
-        sort_by_health(character_list)  
-            
+        result = sort_by_health(character_list)  
+        display_characters(character_list=result, display_type="list")  
 
 
 
